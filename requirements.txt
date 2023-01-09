@@ -6,5 +6,6 @@ pandas
 selenium
 pyautogui
 matplotlib
+pytesseract
 scikit-learn
 opencv-python
