@@ -1,0 +1,10 @@
+nltk
+keras
+scipy
+numpy
+pandas
+selenium
+pyautogui
+matplotlib
+scikit-learn
+opencv-python
