@@ -10,5 +10,6 @@ if __name__ == "__main__":
 
     obj = PDFExctractor.ExtractPDF(arg)
     print('No of Pages : ', obj.total_pages())
-    obj.read_index(1)
-    obj.extract_data()
+    # print(obj.read_index(1))
+    print("Page No :", obj.get_page_no_from_index("Abhilash"))
+    obj.extract_data_as_dict()
