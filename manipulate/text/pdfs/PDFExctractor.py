@@ -1,9 +1,9 @@
 import PyPDF2
+import string
 import re
 
 
 class ExtractPDF(list):
-
     PDF_FILE_PATH = ''
     PDF_DATA_TABLE_NAME = ''
     PDF_OBJECT = None
@@ -30,21 +30,21 @@ class ExtractPDF(list):
     def get_page(self, page_no):
         if page_no > self.total_pages():
             return None
-        return self.PDF_OBJECT.pages[page_no-1]
+        return self.PDF_OBJECT.pages[page_no - 1]
 
-    def page_data(self, page):
+    def _page_data(self, page):
         return page.extract_text()
 
     def read_index(self, index_page_number):
         index = []
-        page_data = self.page_data(self.get_page(index_page_number))
+        page_data = self._page_data(self.get_page(index_page_number))
         table_of_contents = str(page_data.split('Page')[2])
         table_rows = table_of_contents.splitlines()
         for row in table_rows:
             if row.strip() != "":
                 dt = row.split('.')
                 content = dt[0]
-                page_no = int(dt[len(dt)-1])
+                page_no = int(dt[len(dt) - 1])
                 index.append([content, page_no])
         return index
 
@@ -54,20 +54,35 @@ class ExtractPDF(list):
                 return contents[1]
         return -1
 
+    def _process_header_string(self, header_string, column_count):
+        header = []
+        print(header_string)
+        words = re.findall(r'\S', header_string)
+
+        print(words)
+        # _raw_header_splitted = header_string.split('  ')
+        # _raw_header_count = len(_raw_header_splitted)
+        # _is_dual_header = True if (_raw_header_count/1.5) > column_count else False
+        # print(_raw_header_splitted)
+        # print("Raw Header Count = ", _raw_header_count)
+        # print("Column Count = ", column_count)
+        # print('Is Dual Header ', _is_dual_header)
+        # columns, rows = (column_count, 2)
+        # header = [['']*columns] * rows
+        # header = [header, []] for increment purpose.
+        return header
+
     def extract_single_table_from_page(self, page_no=4):
-        page_data = self.page_data(self.get_page(page_no))
-        table_head_starts_from = '1/80 = 100'
-        table_head_ends_at = 'Date'
-        table_head_start_index = page_data.index(table_head_starts_from)
-        table_head_end_index = page_data.index(table_head_ends_at)
-        print('Length of Page : ', len(page_data))
-        print('Header Start Index', table_head_start_index)
-        print('Header Ends at', table_head_end_index)
-        table_header = page_data[table_head_start_index+len(table_head_starts_from):table_head_end_index]
-        table_header = table_header.replace(' ','~')
-        print('Table Header ', table_header)
-
-
-        # lines = page_data.splitlines()
-        # for line in lines:
-        #     print(line)
+        page_data = self._page_data(self.get_page(page_no))
+        _header_starts_from = '1/80 = 100'
+        _header_ends_at = 'Date'
+        _sub_header_ends_at = 'Mult.'
+        _header_start_index = page_data.index(_header_starts_from)
+        _header_end_index = page_data.index(_header_ends_at)
+        _header_string = page_data[_header_start_index + len(_header_starts_from):_header_end_index]
+        # _header_string = _header_string.replace(' ', '~')
+        _sub_head_string = page_data[_header_end_index: page_data.rindex(_sub_header_ends_at) + len(_sub_header_ends_at)]
+        _sub_headers = _sub_head_string.split('  ')
+        _sub_head_len = len(_sub_headers)
+        headers = self._process_header_string(_header_string, _sub_head_len)
+        print(headers)
