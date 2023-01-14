@@ -19,4 +19,4 @@ if __name__ == "__main__":
     # print('No of Pages : ', obj.total_pages())
     # print(obj.read_index(1))
     # print("Page No :", obj.get_page_no_by_content("Forge"))
-    obj.extract_single_table_from_page(4)
+    obj.extract_single_table_from_page(6)

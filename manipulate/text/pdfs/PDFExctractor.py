@@ -1,5 +1,4 @@
 import PyPDF2
-import string
 import re
 
 
@@ -56,20 +55,31 @@ class ExtractPDF(list):
 
     def _process_header_string(self, header_string, column_count):
         header = []
+        # header_string = re.sub(r'\n', '*', header_string)
+        # header_string = re.sub(r'\n', '1', header_string)
+        # header_string = header_string.replace(' ', '~')
+        header_string = header_string.splitlines()
+        # temp = header_string.split('~~')
         print(header_string)
-        words = re.findall(r'\S', header_string)
+        # print(temp)
+        # temp = ' '.join(temp).split()
+        # for words in temp:
+        #     if len(words)<2 :
+        #         continue
+        #     else:
+        #         if words.__contains__('1'):
+        #             new_word = words.replace('1', ' ')
+        #             # new_word = words.replace('~', ' ')
+        #             header[len(header)-1] = header[len(header)-1] + ""+ new_word
+        #         else:
+        #             header.append(words.replace('~',' '))
 
-        print(words)
-        # _raw_header_splitted = header_string.split('  ')
-        # _raw_header_count = len(_raw_header_splitted)
-        # _is_dual_header = True if (_raw_header_count/1.5) > column_count else False
-        # print(_raw_header_splitted)
-        # print("Raw Header Count = ", _raw_header_count)
-        # print("Column Count = ", column_count)
-        # print('Is Dual Header ', _is_dual_header)
-        # columns, rows = (column_count, 2)
-        # header = [['']*columns] * rows
-        # header = [header, []] for increment purpose.
+        # for i in range(len(header_string)):
+        #     if header_string[i].isalpha():
+        #         print(header_string[i])
+        # print(header_string)
+        print(header)
+
         return header
 
     def extract_single_table_from_page(self, page_no=4):
@@ -85,4 +95,4 @@ class ExtractPDF(list):
         _sub_headers = _sub_head_string.split('  ')
         _sub_head_len = len(_sub_headers)
         headers = self._process_header_string(_header_string, _sub_head_len)
-        print(headers)
+        # print(headers)
