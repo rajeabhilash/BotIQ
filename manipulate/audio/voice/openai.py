@@ -28,7 +28,7 @@ import speech_recognition as sr
 
 # initialize recognizer class
 r = sr.Recognizer()
-r.
+
 
 # microphone as source for input.
 with sr.Microphone() as source:
@@ -38,11 +38,7 @@ with sr.Microphone() as source:
     print("it's done")
 
 # recognize speech using Google Speech Recognition
-text = r.recognize_google(audio).__str__()
-
-print(text)
-
-
+print(r.recognize_google(audio).__str__())
 
 '''
 #Passing the text to ChatGPT
